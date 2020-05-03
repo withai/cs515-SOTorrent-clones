@@ -10,9 +10,9 @@ def begin_parse(file_arg, create_dirs = False):
 				try:
 					os.mkdir(location + dir)
 				except OSError:
-					print("The directory %s already exists!" % dir)
+					print('The directory %s already exists!' % dir)
 				else:
-					print("Successfully created the directory %s " % dir)
+					print('Successfully created the directory %s ' % dir)
 
 	everything = []
 	with open(file_arg, 'r') as data_file:
@@ -27,11 +27,11 @@ def check_lang(the_list):
 		java_ind = line.find('lang-java')
 		python_ind = line.find('lang-python')
 		if cpp_ind != -1:
-			replace_and_save(line, ".cpp")
+			replace_and_save(line, '.cpp')
 		if java_ind != -1:
-			replace_and_save(line, ".java")
+			replace_and_save(line, '.java')
 		if python_ind != -1:
-			replace_and_save(line, ".py")
+			replace_and_save(line, '.py')
 
 
 def replace_and_save(line, ext):
@@ -47,22 +47,24 @@ def replace_and_save(line, ext):
 		if start_tag_ind == -1:
 			break
 		end_tag_ind = line.find('-->')
+		if end_tag_ind == -1:
+			break
 		remove_tag = line[start_tag_ind:end_tag_ind + 3]
 		line = line.replace(remove_tag, '')
 
-	if ext == ".cpp":
+	if ext == '.cpp':
 		file_name = eight_zeros[0:8-len(str(cpp_count))]
-		with open(path + "/cpp/" + file_name + str(cpp_count) + ext, 'w') as new_cpp_snippet:
+		with open(path + '/cpp/' + file_name + str(cpp_count) + ext, 'w') as new_cpp_snippet:
 			new_cpp_snippet.write(line)
 		increment_cpp()
-	elif ext == ".java":
+	elif ext == '.java':
 		file_name = eight_zeros[0:8-len(str(java_count))]
-		with open(path + "/java/" + file_name + str(java_count) + ext, 'w') as new_java_snippet:
+		with open(path + '/java/' + file_name + str(java_count) + ext, 'w') as new_java_snippet:
 			new_java_snippet.write(line)
 		increment_java()
-	elif ext == ".py":
+	elif ext == '.py':
 		file_name = eight_zeros[0:8-len(str(python_count))]
-		with open(path + "/python/" + file_name + str(python_count) + ext, 'w') as new_python_snippet:
+		with open(path + '/python/' + file_name + str(python_count) + ext, 'w') as new_python_snippet:
 			new_python_snippet.write(line)
 		increment_python()
 
@@ -127,7 +129,7 @@ if __name__ == '__main__':
 
 	if args.file_count == True:
 		c, j, p = get_file_count(False)
-		print('C++: %s files' % c)
-		print('Java: %s files' % j)
+		print('C++:    %s files' % c)
+		print('Java:   %s files' % j)
 		print('Python: %s files' % p)
 

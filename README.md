@@ -9,7 +9,7 @@ The above command will parse and create snippets in individual directories. The 
 
 ### Arguments
 ### -f
-This argument is required, it is the file argument used to define the file to be parsed by parser.py.
+The "file" argument is required, it is the to be parsed by parser.py.
 
 ### -c
 This is the "count" argument and will display the count of code snippets in each subdirectory **after** the file in the command is parsed.
@@ -19,3 +19,6 @@ This is the "directoy creation" argument and will create the appropriate directo
 
 ### -v
 This is the "verbose" argument and will output the name of the code snippet file being added in the terminal. It is helpful for viewing the progress of the file parsing operation.
+
+## Warning
+There is no protection from running the parser.py script on the same file twice. If this is done, duplicates of code snippets will be created and are difficult tto detect. Care should be taken to avoid doing this.

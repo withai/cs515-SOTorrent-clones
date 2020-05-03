@@ -88,9 +88,6 @@ def get_file_count():
 	increment_cpp(len(cur_cpp))
 	increment_java(len(cur_java))
 	increment_python(len(cur_python))
-	print(cpp_count)
-	print(java_count)
-	print(python_count)
 
 
 if __name__ == '__main__':

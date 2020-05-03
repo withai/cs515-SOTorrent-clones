@@ -1,20 +1,21 @@
-import sys, os
+import sys, os, argparse
 from itertools import islice
 
-def begin_parse():
+def begin_parse(file_arg, create_dirs = False):
 	location = os.getcwd()
-	dirs = ['/cpp', '/java', '/python']
-	for dir in dirs:
-		if not os.path.isfile(location + dir):
-			try:
-				os.mkdir(location + dir)
-			except OSError:
-				print("The directory %s already exists!" % dir)
-			else:
-				print("Successfully created the directory %s " % dir)
+	if create_dirs:
+		dirs = ['/cpp', '/java', '/python']
+		for dir in dirs:
+			if not os.path.isfile(location + dir):
+				try:
+					os.mkdir(location + dir)
+				except OSError:
+					print("The directory %s already exists!" % dir)
+				else:
+					print("Successfully created the directory %s " % dir)
 
 	everything = []
-	with open(sys.argv[1], 'r') as data_file:
+	with open(file_arg, 'r') as data_file:
 		for one_line in data_file:
 			everything.append(one_line)
 	return location, everything
@@ -81,20 +82,52 @@ def increment_python(num = 1):
 	python_count += num
 
 
-def get_file_count():
+def get_file_count(change = True):
 	_, _, cur_cpp = next(os.walk(path + '/cpp'))
 	_, _, cur_java = next(os.walk(path + '/java'))
 	_, _, cur_python = next(os.walk(path + '/python'))
-	increment_cpp(len(cur_cpp))
-	increment_java(len(cur_java))
-	increment_python(len(cur_python))
+	if change:
+		increment_cpp(len(cur_cpp))
+		increment_java(len(cur_java))
+		increment_python(len(cur_python))
+	return len(cur_cpp), len(cur_java), len(cur_python)
 
 
 if __name__ == '__main__':
 	cpp_count = 0
 	java_count = 0
 	python_count = 0
-	path, all_lines = begin_parse()
+
+	parse_flag = False
+	if len(sys.argv) < 2:
+		print('You must specify the file to parse!')
+		sys.exit()
+	else:
+		for i in range(len(sys.argv)):
+			if sys.argv[i] == '-f':
+				parse_flag = True
+		if not parse_flag:
+			print('You must specify the file to parse!')
+			sys.exit()
+
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-d', '--create_dir', required = False, action = 'store_true')
+	parser.add_argument('-c', '--file_count', required = False, action = 'store_true')
+	parser.add_argument('-f', '--parse_file', required = True)
+	args = parser.parse_args()
+	file = args.parse_file
+
+	if args.create_dir == True:
+		path, all_lines = begin_parse(file, True)
+	else:
+		path, all_lines = begin_parse(file)
+
 	get_file_count()
 	check_lang(all_lines)
+
+	if args.file_count == True:
+		c, j, p = get_file_count(False)
+		print('C++: %s files' % c)
+		print('Java: %s files' % j)
+		print('Python: %s files' % p)
 

@@ -121,9 +121,9 @@ if __name__ == '__main__':
 			sys.exit()
 
 	parser = argparse.ArgumentParser()
-	parser.add_argument('-d', '--create_dir', required = False, action = 'store_true')
+	parser.add_argument('-f', '--parse_file', required = True) # Required file argument, the rest are optional
 	parser.add_argument('-c', '--file_count', required = False, action = 'store_true')
-	parser.add_argument('-f', '--parse_file', required = True)
+	parser.add_argument('-d', '--create_dir', required = False, action = 'store_true')
 	parser.add_argument('-v', '--verbose', required = False, action = 'store_true')
 	args = parser.parse_args()
 	file = args.parse_file

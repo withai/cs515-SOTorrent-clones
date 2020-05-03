@@ -40,11 +40,11 @@ def replace_and_save(line, ext):
 	if (line[len(line) - 2] == '"'):
 		line = line[:len(line) - 2]
 	line = line.replace('&#xD;&#xA;', '\n')
-	start_tag_ind = 0
-	end_tag_ind = -1
 
-	while start_tag_ind != -1:
+	while True:
 		start_tag_ind = line.find('<!--')
+		if start_tag_ind == -1:
+			break
 		end_tag_ind = line.find('-->')
 		remove_tag = line[start_tag_ind:end_tag_ind + 3]
 		line = line.replace(remove_tag, '')
@@ -66,19 +66,31 @@ def replace_and_save(line, ext):
 		increment_python()
 
 
-def increment_cpp():
+def increment_cpp(num = 1):
 	global cpp_count
-	cpp_count += 1
+	cpp_count += num
 
 
-def increment_java():
+def increment_java(num = 1):
 	global java_count
-	java_count += 1
+	java_count += num
 
 
-def increment_python():
+def increment_python(num = 1):
 	global python_count
-	python_count += 1
+	python_count += num
+
+
+def get_file_count():
+	_, _, cur_cpp = next(os.walk(path + '/cpp'))
+	_, _, cur_java = next(os.walk(path + '/java'))
+	_, _, cur_python = next(os.walk(path + '/python'))
+	increment_cpp(len(cur_cpp))
+	increment_java(len(cur_java))
+	increment_python(len(cur_python))
+	print(cpp_count)
+	print(java_count)
+	print(python_count)
 
 
 if __name__ == '__main__':
@@ -86,5 +98,6 @@ if __name__ == '__main__':
 	java_count = 0
 	python_count = 0
 	path, all_lines = begin_parse()
+	get_file_count()
 	check_lang(all_lines)
 

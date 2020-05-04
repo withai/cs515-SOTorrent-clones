@@ -21,3 +21,13 @@ This is the "directoy creation" argument and will create the appropriate directo
 
 ### -v (Optional)
 This is the "verbose" argument and will output the name of the code snippet file being added in the terminal. It is helpful for viewing the progress of the file parsing operation.
+
+
+## analysis.py
+
+This file produces a graph of the number of code blocks present in the top 10 programming languages from the SOTorrent dataset.
+
+Execution instructions:
+`python3 analysis.py`
+
+![](https://github.com/withai/cs515-SOTorrent-clones/blob/master/top-10-languages.png)

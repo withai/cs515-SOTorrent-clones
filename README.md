@@ -25,7 +25,7 @@ This is the "verbose" argument and will output the name of the code snippet file
 
 ## analysis.py
 
-This file produces a graph of the number of code blocks present in the top 10 programming languages from the SOTorrent dataset.
+This python script produces a graph of the number of code blocks present in the top 10 programming languages from the SOTorrent dataset.
 
 Execution instructions:
 `python3 analysis.py`

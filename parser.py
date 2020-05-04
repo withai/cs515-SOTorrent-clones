@@ -4,7 +4,7 @@ from itertools import islice
 def begin_parse(file_arg, create_dirs = False):
 	location = os.getcwd()
 	if create_dirs:
-		dirs = ['/cpp', '/java', '/python']
+		dirs = ['/java', '/js', '/python']
 		for dir in dirs:
 			if not os.path.isfile(location + dir):
 				try:
@@ -23,14 +23,14 @@ def begin_parse(file_arg, create_dirs = False):
 
 def check_lang(the_list, verbose = False):
 	for line in the_list:
-		cpp_ind = line.find('lang-cpp')
 		java_ind = line.find('lang-java')
+		js_ind = line.find('lang-js')
 		python_ind = line.find('lang-python')
-		if cpp_ind != -1:
-			replace_and_save(line, '.cpp', verbose)
 		if java_ind != -1:
 			replace_and_save(line, '.java', verbose)
-		if python_ind != -1:
+		elif js_ind != -1:
+			replace_and_save(line, '.js', verbose)
+		elif python_ind != -1:
 			replace_and_save(line, '.py', verbose)
 
 
@@ -54,20 +54,20 @@ def replace_and_save(line, ext, verbose):
 		remove_tag = line[start_tag_ind:end_tag_ind + 4]
 		line = line.replace(remove_tag, '')
 
-	if ext == '.cpp':
-		file_name = eight_zeros[0:8-len(str(cpp_count))]
-		with open(path + '/cpp/' + file_name + str(cpp_count) + ext, 'w') as new_cpp_snippet:
-			new_cpp_snippet.write(line)
-		if verbose:
-			print(file_name + str(cpp_count) + ext)
-		increment_cpp()
-	elif ext == '.java':
+	if ext == '.java':
 		file_name = eight_zeros[0:8-len(str(java_count))]
 		with open(path + '/java/' + file_name + str(java_count) + ext, 'w') as new_java_snippet:
 			new_java_snippet.write(line)
 		if verbose:
 			print(file_name + str(java_count) + ext)
 		increment_java()
+	elif ext == '.js':
+		file_name = eight_zeros[0:8-len(str(js_count))]
+		with open(path + '/js/' + file_name + str(js_count) + ext, 'w') as new_js_snippet:
+			new_js_snippet.write(line)
+		if verbose:
+			print(file_name + str(js_count) + ext)
+		increment_js()
 	elif ext == '.py':
 		file_name = eight_zeros[0:8-len(str(python_count))]
 		with open(path + '/python/' + file_name + str(python_count) + ext, 'w') as new_python_snippet:
@@ -77,14 +77,14 @@ def replace_and_save(line, ext, verbose):
 		increment_python()
 
 
-def increment_cpp(num = 1):
-	global cpp_count
-	cpp_count += num
-
-
 def increment_java(num = 1):
 	global java_count
 	java_count += num
+
+
+def increment_js(num = 1):
+	global js_count
+	js_count += num
 
 
 def increment_python(num = 1):
@@ -93,19 +93,19 @@ def increment_python(num = 1):
 
 
 def get_file_count(change = True):
-	_, _, cur_cpp = next(os.walk(path + '/cpp'))
 	_, _, cur_java = next(os.walk(path + '/java'))
+	_, _, cur_js = next(os.walk(path + '/js'))
 	_, _, cur_python = next(os.walk(path + '/python'))
 	if change:
-		increment_cpp(len(cur_cpp))
 		increment_java(len(cur_java))
+		increment_js(len(cur_js))
 		increment_python(len(cur_python))
-	return len(cur_cpp), len(cur_java), len(cur_python)
+	return len(cur_java), len(cur_js), len(cur_python)
 
 
 if __name__ == '__main__':
-	cpp_count = 0
 	java_count = 0
+	js_count = 0
 	python_count = 0
 
 	parse_flag = False
@@ -140,8 +140,8 @@ if __name__ == '__main__':
 		check_lang(all_lines)
 
 	if args.file_count == True:
-		c, j, p = get_file_count(False)
-		print('C++:    %s files' % c)
-		print('Java:   %s files' % j)
-		print('Python: %s files' % p)
+		ja, js, p = get_file_count(False)
+		print('Java:       %s files' % ja)
+		print('JavaScript: %s files' % js)
+		print('Python:     %s files' % p)
 
